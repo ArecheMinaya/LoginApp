@@ -16,7 +16,11 @@ ThemeData buildDarkTheme() {
     brightness: Brightness.dark,
     colorScheme: scheme,
     textTheme: buildAppTextTheme(Brightness.dark),
-    appBarTheme: const AppBarTheme(centerTitle: true, elevation: 0),
+    appBarTheme: const AppBarTheme(
+      centerTitle: true,
+      elevation: 0,
+      scrolledUnderElevation: 0,
+    ),
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ElevatedButton.styleFrom(
         minimumSize: const Size.fromHeight(48),
@@ -26,6 +30,7 @@ ThemeData buildDarkTheme() {
         textStyle: const TextStyle(fontWeight: FontWeight.w600),
       ),
     ),
+
     outlinedButtonTheme: OutlinedButtonThemeData(
       style: OutlinedButton.styleFrom(
         minimumSize: const Size.fromHeight(48),

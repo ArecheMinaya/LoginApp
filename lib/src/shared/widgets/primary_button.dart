@@ -18,36 +18,22 @@ class PrimaryButton extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
-    final child = isLoading
-        ? Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              SizedBox(
-                width: 20,
-                height: 20,
-                child: CircularProgressIndicator(
-                  strokeWidth: 2.5,
-                  valueColor: AlwaysStoppedAnimation<Color>(
-                    theme.colorScheme.onPrimary,
-                  ),
-                ),
-              ),
-              const SizedBox(width: 12),
-              Text(
-                'Cargando...',
-                style: theme.textTheme.titleMedium?.copyWith(
-                  color: theme.colorScheme.onPrimary,
-                ),
-              ),
-            ],
-          )
-        : Text(
-            text,
-            style: theme.textTheme.titleMedium?.copyWith(
-              fontWeight: FontWeight.w600,
-            ),
-          );
+    final Widget child;
+    if (isLoading) {
+      child = Text(
+        'Cargando...',
+        style: theme.textTheme.titleMedium?.copyWith(
+          fontWeight: FontWeight.w600,
+        ),
+      );
+    } else {
+      child = Text(
+        text,
+        style: theme.textTheme.titleMedium?.copyWith(
+          fontWeight: FontWeight.w600,
+        ),
+      );
+    }
 
     return SizedBox(
       width: fullWidth ? double.infinity : null,

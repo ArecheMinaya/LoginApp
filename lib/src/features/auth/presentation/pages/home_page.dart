@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
+import 'package:login_app/src/features/auth/presentation/widgets/icon_text.dart';
 import 'package:login_app/src/features/auth/presentation/widgets/skills_card.dart';
+import 'package:login_app/src/shared/widgets/primary_button.dart';
 import 'package:login_app/src/shared/widgets/theme_mode_button.dart';
 import 'package:redux/redux.dart';
 
@@ -74,43 +76,28 @@ class HomePage extends StatelessWidget {
                               SkillsCard(
                                 skill: Skills(
                                   name: 'Flutter',
-                                  icon: '0xe1b1',
-                                  color: Colors.blue,
+                                  icon: 'lib/assets/images/flutter.png',
+                                  color: Colors.blueAccent,
                                 ),
                               ),
                               SkillsCard(
                                 skill: Skills(
                                   name: 'React',
-                                  icon: '0xe1b2',
-                                  color: Colors.green,
+                                  icon: 'lib/assets/images/React_icon.png',
+                                  color: Colors.blue,
                                 ),
                               ),
-
                               SkillsCard(
                                 skill: Skills(
                                   name: 'Kotlin',
-                                  icon: '0xe1b3',
+                                  icon: 'lib/assets/images/kt_icon.png',
                                   color: Colors.orange,
                                 ),
                               ),
                               SkillsCard(
                                 skill: Skills(
                                   name: 'Swift',
-                                  icon: '0xe1b4',
-                                  color: Colors.red,
-                                ),
-                              ),
-                              SkillsCard(
-                                skill: Skills(
-                                  name: 'Kotlin',
-                                  icon: '0xe1b3',
-                                  color: Colors.orange,
-                                ),
-                              ),
-                              SkillsCard(
-                                skill: Skills(
-                                  name: 'Swift',
-                                  icon: '0xe1b4',
+                                  icon: 'lib/assets/images/swift.png',
                                   color: Colors.red,
                                 ),
                               ),
@@ -132,22 +119,27 @@ class HomePage extends StatelessWidget {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
+                                    // Columna flexible
                                     Expanded(
                                       child: Column(
                                         crossAxisAlignment:
                                             CrossAxisAlignment.start,
-                                        spacing: 10,
                                         children: [
+                                          // Pill/etiqueta
                                           Container(
                                             decoration: BoxDecoration(
                                               color: Theme.of(
                                                 context,
                                               ).colorScheme.primary,
                                               borderRadius:
-                                                  BorderRadius.circular(16),
+                                                  BorderRadius.circular(12),
                                             ),
-                                            padding: const EdgeInsets.all(8),
+                                            padding: const EdgeInsets.symmetric(
+                                              horizontal: 10,
+                                              vertical: 6,
+                                            ),
                                             child: Text(
                                               'Small Card',
                                               style: t.bodySmall?.copyWith(
@@ -158,73 +150,89 @@ class HomePage extends StatelessWidget {
                                               ),
                                             ),
                                           ),
+                                          const SizedBox(height: 10),
+
+                                          // Título
                                           Text(
                                             'Headline Small',
                                             style: t.headlineSmall,
                                           ),
-                                          Row(
+                                          const SizedBox(height: 8),
+
+                                          // En lugar de Row rígida, usamos Wrap que parte en varias líneas
+                                          Wrap(
+                                            spacing: 12,
+                                            runSpacing: 6,
+                                            crossAxisAlignment:
+                                                WrapCrossAlignment.center,
                                             children: [
-                                              Icon(
-                                                Icons.access_alarm,
-                                                size: 20,
+                                              IconText(
+                                                icon: Icons.access_alarm,
+                                                label: 'text example',
+                                                textStyle: t.bodySmall,
                                               ),
-                                              SizedBox(width: 2),
-                                              Text(
-                                                'text example',
-                                                style: t.bodySmall,
-                                              ),
-                                              SizedBox(width: 8),
-                                              Icon(Icons.star, size: 20),
-                                              SizedBox(width: 2),
-                                              Text(
-                                                'text example',
-                                                style: t.bodySmall,
+                                              IconText(
+                                                icon: Icons.star,
+                                                label: 'text example',
+                                                textStyle: t.bodySmall,
                                               ),
                                             ],
                                           ),
                                         ],
                                       ),
                                     ),
-                                    Container(
+
+                                    const SizedBox(width: 12),
+
+                                    // Tarjeta de progreso con ancho/alto fijos
+                                    SizedBox(
                                       width: 80,
                                       height: 80,
-                                      decoration: BoxDecoration(
-                                        color: Theme.of(
-                                          context,
-                                        ).colorScheme.primary,
-                                        borderRadius: BorderRadius.circular(16),
-                                      ),
-                                      padding: const EdgeInsets.all(12),
-                                      child: Stack(
-                                        alignment: Alignment.center,
-                                        children: [
-                                          SizedBox.expand(
-                                            child: CircularProgressIndicator(
-                                              backgroundColor: Theme.of(context)
-                                                  .colorScheme
-                                                  .onPrimary
-                                                  .withValues(alpha: 0.2),
-                                              strokeWidth: 4,
-                                              valueColor:
-                                                  AlwaysStoppedAnimation<Color>(
-                                                    Theme.of(
-                                                      context,
-                                                    ).colorScheme.onPrimary,
-                                                  ),
-                                              value: 0.73,
-                                            ),
+                                      child: DecoratedBox(
+                                        decoration: BoxDecoration(
+                                          color: Theme.of(
+                                            context,
+                                          ).colorScheme.primary,
+                                          borderRadius: BorderRadius.circular(
+                                            16,
                                           ),
-
-                                          Text(
-                                            '73%',
-                                            style: t.bodyMedium?.copyWith(
-                                              color: Theme.of(
-                                                context,
-                                              ).colorScheme.onPrimary,
-                                              fontWeight: FontWeight.bold,
-                                            ),
+                                        ),
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(12),
+                                          child: Stack(
+                                            alignment: Alignment.center,
+                                            children: [
+                                              Positioned.fill(
+                                                child: CircularProgressIndicator(
+                                                  backgroundColor:
+                                                      Theme.of(context)
+                                                          .colorScheme
+                                                          .onPrimary
+                                                          .withOpacity(0.2),
+                                                  strokeWidth: 4,
+                                                  valueColor:
+                                                      AlwaysStoppedAnimation<
+                                                        Color
+                                                      >(
+                                                        Theme.of(
+                                                          context,
+                                                        ).colorScheme.onPrimary,
+                                                      ),
+                                                  value: 0.73,
+                                                ),
+                                              ),
+                                              Text(
+                                                '73%',
+                                                style: t.bodyMedium?.copyWith(
+                                                  color: Theme.of(
+                                                    context,
+                                                  ).colorScheme.onPrimary,
+                                                  fontWeight: FontWeight.bold,
+                                                ),
+                                              ),
+                                            ],
                                           ),
-                                        ],
+                                        ),
                                       ),
                                     ),
                                   ],
@@ -236,11 +244,12 @@ class HomePage extends StatelessWidget {
                         ],
                       ),
                     ),
-                    ElevatedButton(
-                      onPressed: () {
-                        vm.onLogout();
-                      },
-                      child: Text("Cerrar Sesion", style: t.titleSmall),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 12),
+                      child: PrimaryButton(
+                        text: "Cerrar Sesion",
+                        onPressed: () => vm.onLogout(),
+                      ),
                     ),
                   ],
                 ),
@@ -272,12 +281,4 @@ class _Vm {
       onLogout: () => store.dispatch(LogoutRequested()),
     );
   }
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is _Vm && email == other.email && isLoading == other.isLoading;
-
-  @override
-  int get hashCode => Object.hash(email, isLoading);
 }

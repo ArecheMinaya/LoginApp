@@ -103,13 +103,11 @@ class _LoginPageState extends State<LoginPage> {
                         onFieldSubmitted: (_) => _submit(vm),
                       ),
                       const SizedBox(height: 16),
-
                       PrimaryButton(
                         text: 'Iniciar Sesión',
                         isLoading: vm.isLoading,
                         onPressed: () => _submit(vm),
                       ),
-
                       const SizedBox(height: 26),
                       InkWell(
                         onTap: () {

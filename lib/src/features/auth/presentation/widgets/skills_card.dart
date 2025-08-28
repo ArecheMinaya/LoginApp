@@ -10,19 +10,17 @@ class SkillsCard extends StatelessWidget {
       padding: const EdgeInsets.all(16.0),
       child: Container(
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(8),
+          borderRadius: BorderRadius.circular(16),
           border: Border.all(color: skill.color, width: 2),
         ),
-        height: 80,
-        width: 80,
+        height: 84,
+        width: 84,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            // Icon(
-            //   IconData(int.parse(skill.icon), fontFamily: 'MaterialIcons'),
-            //   size: 40,
-            // ),
-            const SizedBox(width: 16),
+            Image.asset(skill.icon, width: 34, height: 34),
+            const SizedBox(height: 6),
             Text(skill.name, style: Theme.of(context).textTheme.bodyMedium),
           ],
         ),
