@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'typography.dart';
 
 ThemeData buildLightTheme() {
-  const seed = Color(0xFF0E7AFE);
+  const seed = Color(0xFFB6F500);
   final scheme = ColorScheme.fromSeed(
     seedColor: seed,
     brightness: Brightness.light,
+    primary: seed,
+    primaryContainer: seed.withValues(alpha: 0.2),
   );
   final radius = 12.0;
 
@@ -14,7 +16,14 @@ ThemeData buildLightTheme() {
     brightness: Brightness.light,
     colorScheme: scheme,
     textTheme: buildAppTextTheme(Brightness.light),
-    appBarTheme: const AppBarTheme(centerTitle: true, elevation: 0),
+    primaryColor: seed,
+    scaffoldBackgroundColor: Colors.white,
+
+    appBarTheme: const AppBarTheme(
+      centerTitle: true,
+      elevation: 0,
+      backgroundColor: Colors.white,
+    ),
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ElevatedButton.styleFrom(
         minimumSize: const Size.fromHeight(48),

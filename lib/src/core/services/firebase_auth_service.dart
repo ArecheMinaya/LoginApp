@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
 
 class FirebaseAuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -11,7 +12,7 @@ class FirebaseAuthService {
       );
       return userCredential.user;
     } catch (e) {
-      print("Error signing in: $e");
+      debugPrint("Error signing in: $e");
       return null;
     }
   }
@@ -22,7 +23,7 @@ class FirebaseAuthService {
           .createUserWithEmailAndPassword(email: email, password: password);
       return userCredential.user;
     } catch (e) {
-      print("Error creating user: $e");
+      debugPrint("Error creating user: $e");
       return null;
     }
   }

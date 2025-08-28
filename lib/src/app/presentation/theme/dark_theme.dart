@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'typography.dart';
 
 ThemeData buildDarkTheme() {
-  const seed = Color(0xFF0E7AFE);
+  const seed = Color(0xFF5CB338);
   final scheme = ColorScheme.fromSeed(
     seedColor: seed,
     brightness: Brightness.dark,
+    primary: seed,
+    primaryContainer: seed.withValues(alpha: 0.2),
   );
   final radius = 12.0;
 
