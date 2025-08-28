@@ -22,21 +22,19 @@ class AppState {
   }
 
   // ---- Persistencia ----
-  static const _schemaVersion = 1;
   Map<String, dynamic> toJson() => {
-    '_v': _schemaVersion,
     'auth': auth.toJson(),
     'settings': settings.toJson(),
   };
 
-  static AppState fromJson(dynamic json) {
-    final authJson = (json['auth'] as Map?) ?? const <String, dynamic>{};
-    final settingsJson =
-        (json['settings'] as Map?) ?? const <String, dynamic>{};
-
+  static AppState fromJson(Map<String, dynamic> json) {
+    final authJson = Map<String, dynamic>.from((json['auth'] as Map?) ?? {});
+    final settingsJson = Map<String, dynamic>.from(
+      (json['settings'] as Map?) ?? {},
+    );
     return AppState(
-      auth: AuthState.fromJson(Map<String, dynamic>.from(authJson)),
-      settings: SettingsState.fromJson(Map<String, dynamic>.from(settingsJson)),
+      auth: AuthState.fromJson(authJson),
+      settings: SettingsState.fromJson(settingsJson),
     );
   }
 }

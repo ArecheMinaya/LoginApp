@@ -1,3 +1,4 @@
+import 'package:flutter/widgets.dart';
 import 'package:login_app/src/app/redux/middleware.dart';
 import 'package:redux/redux.dart';
 import 'package:redux_persist/redux_persist.dart';
@@ -7,26 +8,27 @@ import 'app_state.dart';
 import 'reducers.dart';
 
 Future<Store<AppState>> createAppStore() async {
-  // Serializer que acepta dynamic y castea a Map
   final serializer = JsonSerializer<AppState>((dynamic json) {
     if (json is Map) {
       return AppState.fromJson(Map<String, dynamic>.from(json));
     }
-    return null; // primera vez no hay nada
+    return AppState.initial(); // primera vez no hay nada
   });
 
-  // Storage multiplataforma (SharedPreferences / localStorage)
   final persistor = Persistor<AppState>(
     storage: FlutterStorage(key: 'app_state_v1'),
     serializer: serializer,
-    debug: false,
+    debug: true,
     throttleDuration: const Duration(milliseconds: 250),
   );
 
-  // Cargar estado guardado
-  final initialFromDisk = await persistor.load();
+  AppState? initialFromDisk;
+  try {
+    initialFromDisk = await persistor.load();
+  } catch (e) {
+    debugPrint('Error al cargar el estado guardado: $e');
+  }
 
-  // Crear Store
   final store = Store<AppState>(
     appReducer,
     initialState: initialFromDisk ?? AppState.initial(),

@@ -1,4 +1,4 @@
-import 'package:login_app/src/features/auth/%20models/user.dart';
+import 'package:login_app/src/features/auth/models/user.dart';
 
 enum AuthStatus { unauthenticated, loading, authenticated, error }
 
@@ -25,7 +25,6 @@ class AuthState {
   Map<String, dynamic> toJson() => {
     'status': status.index,
     'userInfo': userInfo?.toJson(),
-    'errorMessage': errorMessage,
   };
 
   static AuthState fromJson(Map<String, dynamic> json) => AuthState(
@@ -33,6 +32,6 @@ class AuthState {
     userInfo: UserModel.fromJson(
       (json['userInfo'] ?? {}) as Map<String, dynamic>,
     ),
-    errorMessage: json['errorMessage'] as String?,
+    errorMessage: null,
   );
 }

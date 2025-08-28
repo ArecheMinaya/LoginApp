@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:login_app/src/app/presentation/root_router.dart';
 import 'package:login_app/src/features/auth/presentation/pages/login_page.dart';
-import 'package:login_app/src/features/auth/presentation/pages/sign_up_page.dart';
 import 'package:login_app/src/features/auth/presentation/pages/home_page.dart';
+import 'package:login_app/src/features/auth/presentation/pages/sign_up_page.dart';
 
 mixin AppRoutes {
   static const root = '/';

@@ -1,4 +1,4 @@
-import 'package:login_app/src/features/auth/%20models/user.dart';
+import 'package:login_app/src/features/auth/models/user.dart';
 
 class LoginRequested {
   final String email;
@@ -16,6 +16,24 @@ class LoginFailed {
   LoginFailed({required this.message});
 }
 
+class SignUpRequested {
+  final String email;
+  final String password;
+  SignUpRequested({required this.email, required this.password});
+}
+
+class SignUpSucceeded {
+  final UserModel userInfo;
+  SignUpSucceeded(this.userInfo);
+}
+
+class SignUpFailed {
+  final String message;
+  SignUpFailed(this.message);
+}
+
 class LogoutRequested {}
 
 class LogoutSucceeded {}
+
+class ClearAuthError {}

@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:login_app/src/app/redux/app_state.dart';
-import 'package:login_app/src/features/auth/%20models/user.dart';
+import 'package:login_app/src/features/auth/models/user.dart';
 import 'package:redux/redux.dart';
 import 'auth_actions.dart';
 
@@ -9,6 +9,7 @@ List<Middleware<AppState>> createAuthMiddleware() {
   return [
     TypedMiddleware<AppState, LoginRequested>(_handleLoginRequested).call,
     TypedMiddleware<AppState, LogoutRequested>(_handleLogoutRequested).call,
+    TypedMiddleware<AppState, SignUpRequested>(_handleSignUp).call,
   ];
 }
 
@@ -44,4 +45,24 @@ void _handleLogoutRequested(
 ) {
   next(action);
   store.dispatch(LogoutSucceeded());
+}
+
+Future<void> _handleSignUp(
+  Store<AppState> store,
+  SignUpRequested action,
+  NextDispatcher next,
+) async {
+  next(action);
+
+  await Future.delayed(const Duration(seconds: 2));
+
+  store.dispatch(
+    SignUpSucceeded(UserModel(email: action.email.trim(), id: "id-1")),
+  );
+
+  store.dispatch(
+    LoginSucceeded(
+      userInfo: UserModel(email: action.email.trim(), id: "id-1"),
+    ),
+  );
 }

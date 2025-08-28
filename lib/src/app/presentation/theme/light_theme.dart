@@ -22,15 +22,22 @@ ThemeData buildLightTheme() {
     appBarTheme: const AppBarTheme(
       centerTitle: true,
       elevation: 0,
+      scrolledUnderElevation: 0,
       backgroundColor: Colors.white,
     ),
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ElevatedButton.styleFrom(
+        backgroundColor: seed,
+        elevation: 0,
         minimumSize: const Size.fromHeight(48),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(radius),
         ),
-        textStyle: const TextStyle(fontWeight: FontWeight.w600),
+        textStyle: const TextStyle(
+          fontWeight: FontWeight.w600,
+          fontSize: 16,
+          color: Colors.white,
+        ),
       ),
     ),
     outlinedButtonTheme: OutlinedButtonThemeData(

@@ -1,5 +1,5 @@
 import 'package:login_app/src/core/services/firebase_auth_service.dart';
-import 'package:login_app/src/features/auth/%20models/user.dart';
+import 'package:login_app/src/features/auth/models/user.dart';
 
 class AuthRepository {
   final FirebaseAuthService _firebaseAuthService;
