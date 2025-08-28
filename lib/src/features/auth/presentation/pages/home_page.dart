@@ -208,7 +208,9 @@ class HomePage extends StatelessWidget {
                                                       Theme.of(context)
                                                           .colorScheme
                                                           .onPrimary
-                                                          .withOpacity(0.2),
+                                                          .withValues(
+                                                            alpha: 0.2,
+                                                          ),
                                                   strokeWidth: 4,
                                                   valueColor:
                                                       AlwaysStoppedAnimation<
