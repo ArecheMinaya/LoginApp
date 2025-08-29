@@ -153,7 +153,7 @@ La app incluye 3 tipos de pruebas:
 
 1. **Clonar el repositorio**:
    ```bash
-   git clone <repository-url>
+   git clone https://github.com/ArecheMinaya/LoginApp.git
    cd LoginApp
    ```
 
