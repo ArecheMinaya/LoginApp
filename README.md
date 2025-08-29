@@ -1,17 +1,17 @@
 # LoginApp
 
-A Flutter application with authentication functionality using Redux for state management and Firebase for production authentication.
+Una aplicación Flutter con funcionalidad de autenticación usando Redux para la gestión de estado y Firebase para autenticación en producción.
 
-## 🚀 Features
+## 🚀 Funcionalidades
 
-- **Authentication System**: Login and signup functionality
-- **Environment Configuration**: Support for DEV and PROD environments
-- **State Management**: Redux with Redux Persist for state persistence
-- **Testing**: Unit tests, Widget tests, and Golden tests
-- **Firebase Integration**: Production-ready authentication with Firebase Auth
-- **Theme Support**: Light and dark theme modes
+- **Sistema de Autenticación**: Inicio de sesión y registro de usuarios  
+- **Configuración de Entornos**: Soporte para entornos DEV y PROD  
+- **Gestión de Estado**: Redux con Redux Persist para persistencia de estado  
+- **Pruebas**: Tests unitarios, de widgets y golden tests  
+- **Integración con Firebase**: Autenticación lista para producción con Firebase Auth  
+- **Soporte de Tema**: Modos claro y oscuro  
 
-## 📁 Project Structure
+## 📁 Estructura del Proyecto
 
 ```
 LoginApp/
@@ -52,25 +52,26 @@ LoginApp/
 └── android/ ios/ web/              # Platform-specific code
 ```
 
-## 🔧 Environment Configuration
 
-The app supports two environments controlled by the `ENVIRONMENT` flag:
+## 🔧 Configuración de Entornos
 
-### Development Environment (DEV)
-- Uses fake authentication service
-- Default credentials: `test@redux.com` / `123456`
-- No Firebase connection required
-- Suitable for development and testing
+La app soporta dos entornos controlados por la variable `ENVIRONMENT`:
 
-### Production Environment (PROD)
-- Uses Firebase Authentication
-- Real user registration and login
-- Requires Firebase configuration
-- Production-ready authentication
+### Entorno de Desarrollo (DEV)
+- Usa servicio de autenticación falso  
+- Credenciales por defecto: `test@redux.com` / `123456`  
+- No requiere conexión a Firebase  
+- Ideal para desarrollo y pruebas  
 
-## 🚀 Launch Configurations
+### Entorno de Producción (PROD)
+- Usa Firebase Authentication  
+- Registro e inicio de sesión reales  
+- Requiere configuración de Firebase  
+- Autenticación lista para producción  
 
-The project includes VS Code launch configurations for different environments:
+## 🚀 Configuraciones de Lanzamiento
+
+El proyecto incluye configuraciones de VS Code para distintos entornos:
 
 ### LoginApp (DEV)
 ```json
@@ -81,10 +82,11 @@ The project includes VS Code launch configurations for different environments:
   "args": ["--dart-define=ENVIRONMENT=DEV"]
 }
 ```
-- Runs the app in development mode
-- Uses fake authentication service
-- No Firebase setup required
-- Default user: `test@redux.com` / `123456`
+
+- Ejecuta la app en modo desarrollo
+- Usa el servicio de autenticación falso
+- No requiere Firebase
+- Usuario por defecto: `test@redux.com` / `123456`
 
 ### LoginApp (PROD)
 ```json
@@ -95,80 +97,74 @@ The project includes VS Code launch configurations for different environments:
   "args": ["--dart-define=ENVIRONMENT=PROD"]
 }
 ```
-- Runs the app in production mode
-- Uses Firebase Authentication
-- Requires Firebase project setup
-- Real user registration and login
 
+- Ejecuta la app en modo producción
+- Usa Firebase Authentication
+- Requiere configuración de Firebase
+- Registro e inicio de sesión reales
+
+  
 ## 🧪 Testing
 
-The project includes comprehensive testing with three types of tests:
+La app incluye 3 tipos de pruebas:
 
 ### Unit Tests
-- Test Redux reducers and actions
-- Located in `test/features/auth/redux/`
-- Test files: `auth_reducer_test.dart`, `app_reducer_test.dart`, `settings_reducer_test.dart`
+- Reducers y acciones de Redux
+- Ubicados en `test/features/auth/redux/`
+- Archivos: `auth_reducer_test.dart`, `app_reducer_test.dart`, `settings_reducer_test.dart`
 
 ### Widget Tests
-- Test individual widgets
-- Located in `test/shared/widgets/`
-- Test file: `primary_button_test.dart`
+- Prueban widgets individuales
+- Ubicados en `test/shared/widgets/`
+- Archivo: `primary_button_test.dart`
 
 ### Golden Tests
-- Visual regression tests
-- Located in `test/goldens/`
-- Test file: `home_page_golden_test.dart`
+- Pruebas de regresión visual
+- Ubicados en `test/goldens/`
+- Archivo: `home_page_golden_test.dart`
 
-### Running Tests
+### Ejecución de Tests
 
-1. **Generate Golden Test Images**:
+1. **Generar imágenes de golden tests**:
    ```bash
    flutter test --update-goldens
    ```
 
-2. **Run All Tests**:
+2. **Ejecutar todos los tests**:
    ```bash
    flutter test
    ```
 
-3. **Run Specific Test File**:
+3. **Ejecutar un test específico**:
    ```bash
    flutter test test/features/auth/redux/auth_reducer_test.dart
    ```
 
-## 🛠️ Setup Instructions
+## 🛠️ Instrucciones de Configuración
 
-### Prerequisites
+### Requisitos Previos
+
 - Flutter SDK (^3.8.1)
 - Dart SDK
-- Android Studio / VS Code
+- Android Studio o VS Code
 - Git
 
-### Getting Started
+### Primeros Pasos
 
-1. **Clone the repository**:
+1. **Clonar el repositorio**:
    ```bash
    git clone <repository-url>
    cd LoginApp
    ```
 
-2. **Install dependencies**:
+2. **Instalar dependencias**:
    ```bash
    flutter pub get
    ```
 
-3. **Run the app**:
-   - For development: Use "LoginApp (DEV)" launch configuration
-   - For production: Use "LoginApp (PROD)" launch configuration
-
-### Firebase Setup (Production Only)
-
-If you want to use the production environment with Firebase:
-
-1. Create a Firebase project
-2. Add your `google-services.json` (Android) and `GoogleService-Info.plist` (iOS)
-3. Configure Firebase Authentication
-4. Use the "LoginApp (PROD)" launch configuration
+3. **Ejecutar el app**:
+   - Desarrollo: usar configuración "LoginApp (DEV)"
+   - Producción: usar configuración "LoginApp (PROD)"
 
 ## 📦 Dependencies
 
@@ -182,36 +178,16 @@ If you want to use the production environment with Firebase:
 ### Dev Dependencies
 - `flutter_test`: Testing framework
 - `flutter_lints`: Code linting
-- `json_serializable`: JSON serialization
 - `test`: Testing utilities
 
-## 🏗️ Architecture
+## 🏗️ Arquitectura
 
-The app follows a feature-based architecture with:
-- **Redux** for state management
+El app sigue una arquitectura basada en características:
+- **Redux** para gestión de estado
 - **Feature-based** folder structure
-- **Clean Architecture** principles
-- **Dependency Injection** pattern
-- **Repository Pattern** for data access
+- Principios de **Clean Architecture**
 
-## 📱 Supported Platforms
+## 📱 Plataformas Soportadas
 
 - Android
 - iOS
-- Web
-- macOS
-- Linux
-- Windows
-
-## 🤝 Contributing
-
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Add tests for new functionality
-5. Run all tests to ensure they pass
-6. Submit a pull request
-
-## 📄 License
-
-This project is licensed under the MIT License.
