@@ -55,7 +55,9 @@ class HomePage extends StatelessWidget {
                                   context,
                                 ).colorScheme.primary,
                                 radius: 30,
-                                child: const Icon(Icons.person),
+                                backgroundImage: const AssetImage(
+                                  'lib/assets/images/me.png',
+                                ),
                               ),
                               title: Text(
                                 '¡Bienvenido!',

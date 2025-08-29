@@ -1,68 +1,72 @@
+// lib/src/features/auth/redux/auth_middleware.dart
 import 'dart:async';
-import 'package:flutter/material.dart';
-import 'package:login_app/src/app/redux/app_state.dart';
-import 'package:login_app/src/features/auth/models/user.dart';
+import 'package:flutter/foundation.dart';
+import 'package:login_app/src/features/auth/service/auth_service.dart';
 import 'package:redux/redux.dart';
+
+import '../../../app/redux/app_state.dart';
 import 'auth_actions.dart';
 
-List<Middleware<AppState>> createAuthMiddleware() {
+List<Middleware<AppState>> createAuthMiddleware(AuthService auth) {
   return [
-    TypedMiddleware<AppState, LoginRequested>(_handleLoginRequested).call,
-    TypedMiddleware<AppState, LogoutRequested>(_handleLogoutRequested).call,
-    TypedMiddleware<AppState, SignUpRequested>(_handleSignUp).call,
+    TypedMiddleware<AppState, LoginRequested>(_handleLogin(auth)).call,
+    TypedMiddleware<AppState, LogoutRequested>(_handleLogout(auth)).call,
+    TypedMiddleware<AppState, SignUpRequested>(_handleSignUp(auth)).call,
   ];
 }
 
-Future<void> _handleLoginRequested(
+FutureOr<void> Function(
   Store<AppState> store,
   LoginRequested action,
   NextDispatcher next,
-) async {
-  next(action);
-
-  await Future.delayed(const Duration(seconds: 2));
-
-  const validEmail = 'test@redux.com';
-  const validPass = '123456';
-
-  if (action.email.trim().toLowerCase() == validEmail &&
-      action.password == validPass) {
-    debugPrint('Middleware: Login OK -> LoginSucceeded');
-    store.dispatch(
-      LoginSucceeded(
-        userInfo: UserModel(id: "id-1", email: action.email.trim()),
-      ),
-    );
-  } else {
-    store.dispatch(LoginFailed(message: 'Invalid email or password'));
-  }
+)
+_handleLogin(AuthService auth) {
+  return (store, action, next) async {
+    next(action);
+    try {
+      final user = await auth.signIn(action.email, action.password);
+      store.dispatch(LoginSucceeded(userInfo: user));
+    } catch (e, st) {
+      debugPrint('Login error: $e\n$st');
+      store.dispatch(LoginFailed(message: _fmt(e)));
+    }
+  };
 }
 
-void _handleLogoutRequested(
+FutureOr<void> Function(
   Store<AppState> store,
   LogoutRequested action,
   NextDispatcher next,
-) {
-  next(action);
-  store.dispatch(LogoutSucceeded());
+)
+_handleLogout(AuthService auth) {
+  return (store, action, next) async {
+    next(action);
+    try {
+      await auth.signOut();
+    } catch (_) {
+      debugPrint('Logout error');
+    }
+    store.dispatch(LogoutSucceeded());
+  };
 }
 
-Future<void> _handleSignUp(
+FutureOr<void> Function(
   Store<AppState> store,
   SignUpRequested action,
   NextDispatcher next,
-) async {
-  next(action);
-
-  await Future.delayed(const Duration(seconds: 2));
-
-  store.dispatch(
-    SignUpSucceeded(UserModel(email: action.email.trim(), id: "id-1")),
-  );
-
-  store.dispatch(
-    LoginSucceeded(
-      userInfo: UserModel(email: action.email.trim(), id: "id-1"),
-    ),
-  );
+)
+_handleSignUp(AuthService auth) {
+  return (store, action, next) async {
+    next(action);
+    try {
+      final user = await auth.signUp(action.email, action.password);
+      store.dispatch(SignUpSucceeded(user));
+      store.dispatch(LoginSucceeded(userInfo: user));
+    } catch (e, st) {
+      debugPrint('SignUp error: $e\n$st');
+      store.dispatch(SignUpFailed(_fmt(e)));
+    }
+  };
 }
+
+String _fmt(Object e) => e.toString().replaceFirst('Exception: ', '');

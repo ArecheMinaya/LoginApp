@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
+import 'package:redux/redux.dart';
+
 import 'package:login_app/src/app/redux/app_state.dart';
+import 'package:login_app/src/core/utils/error_dialog.dart';
 import 'package:login_app/src/core/utils/validators.dart';
 import 'package:login_app/src/features/auth/redux/auth_actions.dart';
+import 'package:login_app/src/features/auth/redux/auth_state.dart';
 import 'package:login_app/src/shared/widgets/app_text_field.dart';
 import 'package:login_app/src/shared/widgets/primary_button.dart';
 import 'package:login_app/src/shared/widgets/theme_mode_button.dart';
@@ -22,7 +26,6 @@ class _SignUpPageState extends State<SignUpPage> {
 
   bool _showPass = false;
   bool _showConfirm = false;
-  bool _isSubmitting = false;
 
   @override
   void dispose() {
@@ -43,111 +46,161 @@ class _SignUpPageState extends State<SignUpPage> {
   Widget build(BuildContext context) {
     final t = Theme.of(context).textTheme;
 
-    return Scaffold(
-      appBar: AppBar(actions: const [ThemeModeButton()]),
-      body: SafeArea(
-        child: Center(
-          child: ConstrainedBox(
-            constraints: const BoxConstraints(maxWidth: 460),
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: Form(
-                key: _formKey,
-                autovalidateMode: AutovalidateMode.onUserInteraction,
-                child: ListView(
-                  shrinkWrap: true,
-                  children: [
-                    const SizedBox(height: 24),
-                    Text(
-                      'Regístrate',
-                      style: t.headlineLarge?.copyWith(
-                        fontWeight: FontWeight.w700,
-                      ),
-                    ),
-                    const SizedBox(height: 8),
-                    Text(
-                      'Crea tu cuenta para continuar',
-                      style: t.bodyMedium?.copyWith(
-                        color: Theme.of(
-                          context,
-                        ).colorScheme.onSurface.withValues(alpha: 0.75),
-                      ),
-                    ),
-                    const SizedBox(height: 28),
+    return StoreConnector<AppState, _Vm>(
+      distinct: true,
+      converter: (Store<AppState> store) => _Vm.fromStore(store),
+      onDidChange: (prev, next) async {
+        final justBecameError =
+            prev?.status != AuthStatus.error && next.status == AuthStatus.error;
 
-                    // Email
-                    AppTextField(
-                      label: 'Correo',
-                      hint: 'tucorreo@dominio.com',
-                      controller: _emailCtrl,
-                      keyboardType: TextInputType.emailAddress,
-                      textInputAction: TextInputAction.next,
-                      validator: AppValidators.email,
-                      suffixIcon: const Icon(Icons.email_outlined),
-                    ),
-                    const SizedBox(height: 16),
-
-                    // Password
-                    AppTextField(
-                      label: 'Contraseña',
-                      controller: _passCtrl,
-                      obscureText: !_showPass,
-                      validator: AppValidators.password(),
-                      textInputAction: TextInputAction.next,
-                      suffixIcon: IconButton(
-                        icon: Icon(
-                          _showPass ? Icons.visibility_off : Icons.visibility,
-                        ),
-                        onPressed: () => setState(() => _showPass = !_showPass),
-                      ),
-                    ),
-                    const SizedBox(height: 16),
-
-                    // Confirm password
-                    AppTextField(
-                      label: 'Confirmar contraseña',
-                      controller: _confirmCtrl,
-                      obscureText: !_showConfirm,
-                      validator: _confirmValidator,
-                      textInputAction: TextInputAction.done,
-                      suffixIcon: IconButton(
-                        icon: Icon(
-                          _showConfirm
-                              ? Icons.visibility_off
-                              : Icons.visibility,
-                        ),
-                        onPressed: () =>
-                            setState(() => _showConfirm = !_showConfirm),
-                      ),
-                    ),
-
-                    const SizedBox(height: 26),
-
-                    PrimaryButton(
-                      text: 'Crear cuenta',
-                      isLoading: _isSubmitting,
-                      onPressed: () async {
-                        if (_formKey.currentState?.validate() != true) return;
-
-                        setState(() => _isSubmitting = true);
-
-                        StoreProvider.of<AppState>(context).dispatch(
-                          SignUpRequested(
-                            email: _emailCtrl.text.trim(),
-                            password: _passCtrl.text,
+        if (justBecameError && (next.errorMessage?.isNotEmpty ?? false)) {
+          await ErrorDialog.show(context, next.errorMessage);
+          if (!context.mounted) return;
+          StoreProvider.of<AppState>(context).dispatch(ClearAuthError());
+        }
+      },
+      builder: (context, vm) {
+        return Scaffold(
+          appBar: AppBar(actions: const [ThemeModeButton()]),
+          body: SafeArea(
+            child: Center(
+              child: ConstrainedBox(
+                constraints: const BoxConstraints(maxWidth: 460),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: Form(
+                    key: _formKey,
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
+                    child: ListView(
+                      shrinkWrap: true,
+                      children: [
+                        const SizedBox(height: 24),
+                        Text(
+                          'Regístrate',
+                          style: t.headlineLarge?.copyWith(
+                            fontWeight: FontWeight.w700,
                           ),
-                        );
-                      },
-                    ),
+                        ),
+                        const SizedBox(height: 8),
+                        Text(
+                          'Crea tu cuenta para continuar',
+                          style: t.bodyMedium?.copyWith(
+                            color: Theme.of(
+                              context,
+                            ).colorScheme.onSurface.withValues(alpha: 0.75),
+                          ),
+                        ),
+                        const SizedBox(height: 28),
 
-                    const SizedBox(height: 26),
-                  ],
+                        // Email
+                        AppTextField(
+                          label: 'Correo',
+                          hint: 'tucorreo@dominio.com',
+                          controller: _emailCtrl,
+                          keyboardType: TextInputType.emailAddress,
+                          textInputAction: TextInputAction.next,
+                          validator: AppValidators.email,
+                          suffixIcon: const Icon(Icons.email_outlined),
+                        ),
+                        const SizedBox(height: 16),
+
+                        // Password
+                        AppTextField(
+                          label: 'Contraseña',
+                          controller: _passCtrl,
+                          obscureText: !_showPass,
+                          validator: AppValidators.password(),
+                          textInputAction: TextInputAction.next,
+                          suffixIcon: IconButton(
+                            icon: Icon(
+                              _showPass
+                                  ? Icons.visibility_off
+                                  : Icons.visibility,
+                            ),
+                            onPressed: () =>
+                                setState(() => _showPass = !_showPass),
+                          ),
+                        ),
+                        const SizedBox(height: 16),
+
+                        // Confirm password
+                        AppTextField(
+                          label: 'Confirmar contraseña',
+                          controller: _confirmCtrl,
+                          obscureText: !_showConfirm,
+                          validator: _confirmValidator,
+                          textInputAction: TextInputAction.done,
+                          onFieldSubmitted: (_) => _submit(vm),
+                          suffixIcon: IconButton(
+                            icon: Icon(
+                              _showConfirm
+                                  ? Icons.visibility_off
+                                  : Icons.visibility,
+                            ),
+                            onPressed: () =>
+                                setState(() => _showConfirm = !_showConfirm),
+                          ),
+                        ),
+
+                        const SizedBox(height: 26),
+
+                        PrimaryButton(
+                          text: 'Crear cuenta',
+                          isLoading: vm.isLoading,
+                          onPressed: vm.isLoading ? null : () => _submit(vm),
+                        ),
+
+                        const SizedBox(height: 26),
+                      ],
+                    ),
+                  ),
                 ),
               ),
             ),
           ),
-        ),
-      ),
+        );
+      },
     );
   }
+
+  void _submit(_Vm vm) {
+    if (_formKey.currentState?.validate() != true) return;
+    vm.onSignUp(_emailCtrl.text.trim(), _passCtrl.text);
+  }
+}
+
+class _Vm {
+  final AuthStatus status;
+  final bool isLoading;
+  final String? errorMessage;
+  final void Function(String email, String pass) onSignUp;
+
+  _Vm({
+    required this.status,
+    required this.isLoading,
+    required this.errorMessage,
+    required this.onSignUp,
+  });
+
+  factory _Vm.fromStore(Store<AppState> store) {
+    final auth = store.state.auth;
+    return _Vm(
+      status: auth.status,
+      isLoading: auth.status == AuthStatus.loading,
+      errorMessage: auth.errorMessage,
+      onSignUp: (email, pass) =>
+          store.dispatch(SignUpRequested(email: email, password: pass)),
+    );
+  }
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is _Vm &&
+          status == other.status &&
+          isLoading == other.isLoading &&
+          errorMessage == other.errorMessage;
+
+  @override
+  int get hashCode => Object.hash(status, isLoading, errorMessage);
 }
